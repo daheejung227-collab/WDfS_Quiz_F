@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 World Day for Safety - MOC 골든벨</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
+    <style>
+        :root {
+            --primary-color: #ff9d5c; 
+            --secondary-color: #ff6b00;
+            --bg-color: #fff9f5;
+            --text-color: #333;
+            --white: #ffffff;
+            --o-color: #2196F3;
+            --x-color: #F44336;
+        }
+
+        body {
+            /* 나눔스퀘어 폰트 적용 */
+            font-family: 'NanumSquare', 'NanumSquareNeo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 패턴 배경 */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 100 100'%3E%3Ctext x='10' y='50' font-size='30'%3E⛑️%3C/text%3E%3Ctext x='60' y='90' font-size='30'%3E👨‍🔧%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .header {
+            position: absolute;
+            top: 40px; left: 50px;
+            font-weight: 800;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+        /* 메인 컨테이너 */
+        .quiz-container {
+            width: 85%;
+            height: 75vh;
+            max-width: 1400px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 60px;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(255, 107, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .main-title { font-size: 3rem; font-weight: 900; color: var(--secondary-color); margin: 20px 0; }
+        .sub-title { font-size: 1.5rem; color: #888; font-weight: 600; }
+
+        .progress-container {
+            width: 100%; height: 12px;
+            background: #eee; border-radius: 20px;
+            margin: 20px 0; overflow: hidden;
+        }
+        #progress-bar {
+            width: 0%; height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.4s ease;
+        }
+
+        /* 질문 영역 */
+        #question-text { font-size: 2.8rem; line-height: 1.4; font-weight: 800; margin-bottom: 40px; word-break: keep-all; }
+        #q-number { color: var(--primary-color); font-weight: 800; font-size: 1.5rem; margin-bottom: 10px; }
+
+        /* 비활성 O/X 가이드 */
+        .display-options { display: flex; gap: 50px; margin-bottom: 30px; }
+        .opt-guide {
+            width: 140px; height: 140px;
+            border-radius: 30px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 5rem; font-weight: 900;
+            border: 5px solid #eee;
+            user-select: none;
+        }
+        .opt-o { color: var(--o-color); border-color: var(--o-color); background: #f0f7ff; }
+        .opt-x { color: var(--x-color); border-color: var(--x-color); background: #fff5f5; }
+
+        /* 해설 화면 스타일 */
+        #ans-display { font-size: 8rem; font-weight: 900; margin-bottom: 10px; }
+        #desc-display { font-size: 2rem; line-height: 1.6; color: #444; max-width: 90%; margin-bottom: 20px; font-weight: 600; }
+        #ref-display { font-size: 1.4rem; color: var(--secondary-color); font-weight: 800; }
+
+        /* 버튼 스타일 */
+        .btn-main {
+            padding: 25px 70px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2);
+            transition: transform 0.2s, background 0.2s;
+            font-family: 'NanumSquare', sans-serif;
+        }
+        .btn-main:hover { transform: scale(1.05); background: #e66000; }
+
+        .action-area { position: absolute; bottom: 60px; right: 60px; }
+
+        /* 화면 페이드 효과 */
+        .fade { animation: fadeIn 0.4s ease-in-out; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+    <div class="header">Hanwha TotalEnergies</div>
+
+    <div class="quiz-container" id="main-container">
+        
+        <div id="start-screen" class="fade">
+            <div class="sub-title">🌱 4.29 세계 안전의 날</div>
+            <h1 class="main-title" style="font-size: 4rem;">MOC ⭕✖️ Quiz 🎈</h1>
+            <div style="margin-top: 40px;">
+                <button class="btn-main" onclick="startQuiz()">[ 시작하기! ]</button>
+            </div>
+        </div>
+
+        <div id="question-screen" class="fade" style="display: none;">
+            <div style="width: 100%;">
+                <div class="progress-container"><div id="progress-bar"></div></div>
+            </div>
+            <span id="q-number">QUESTION 01</span>
+            <h2 id="question-text">질문 내용</h2>
+            <div class="display-options">
+                <div class="opt-guide opt-o">O</div>
+                <div class="opt-guide opt-x">X</div>
+            </div>
+            <div class="action-area">
+                <button class="btn-main" onclick="showAnswer()">정답 확인하기 →</button>
+            </div>
+        </div>
+
+        <div id="answer-screen" class="fade" style="display: none;">
+            <div id="ans-display">O</div>
+            <p id="desc-display">해설 내용</p>
+            <span id="ref-display">근거 조항</span>
+            <div class="action-area">
+                <button class="btn-main" onclick="goNext()">다음 문제로 🏃‍♂️</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const quizData = [
+            { q: "사규 제1조에 따르면, '동일 규격 교체(RIK)'는 변경관리 절차를 적용하지 않아도 되는 예외 사항이다.", a: "O", desc: "부품의 재질, 규격 등이 기존과 완전히 동일한 경우 정비 업무로 간주합니다.", ref: "근거: 사규 제1조(목적) 단서조항" },
+            { q: "공정의 압력, 온도, 유량 등의 설계 기준을 상향 변경하는 것은 MOC 대상인가?", a: "O", desc: "공정 변수의 설계 기준 변경은 '기술적 변경'에 해당하여 반드시 MOC를 거쳐야 합니다.", ref: "근거: 사규 제3조 및 제5조" },
+            { q: "신규 화학물질을 도입할 때 MSDS를 검토하고 사용 승인을 받는 절차도 MOC 규칙에 포함된다.", a: "O", desc: "공정 내 신규 물질 도입은 '물질 변경' 절차를 반드시 준수해야 합니다.", ref: "근거: 사규 제12조(물질변경관리)" },
+            { q: "일시적으로 변경한 후 단기간 내에 원상복구하는 것을 '긴급변경'이라고 부른다.", a: "X", desc: "원상복구가 예정된 일시적 변경은 '임시변경'이 올바른 용어입니다.", ref: "근거: 사규 제3조(정의)" },
+            { q: "변경과 교체의 구분이 모호하여 판정이 어려울 경우, '안전보건기획팀'의 판정에 따른다.", a: "O", desc: "주관부서인 안전보건기획팀이 변경 유무에 대한 최종 유권해석을 담당합니다.", ref: "근거: 사규 제6조(변경 판정)" },
+            { q: "변경관리 절차의 시작인 '변경 발의'는 반드시 부서장만이 할 수 있다.", a: "X", desc: "변경요소 발견 시 해당 부서원 누구나 발의할 수 있습니다.", ref: "근거: 사규 제7조" },
+            { q: "변경을 실시하기 전, 안전/환경/보건에 미치는 영향을 평가하는 '위험성평가'는 필수 단계이다.", a: "O", desc: "모든 변경은 실시 전 위험성평가를 통해 잠재적 위험을 제거해야 합니다.", ref: "근거: 사규 제4조(원칙)" },
+            { q: "위험성평가 결과로 도출된 개선 권고 사항이 미이행된 상태에서도 공사를 먼저 시작할 수 있다.", a: "X", desc: "안전 조치 이행이 확인된 후 시공하는 것이 원칙입니다.", ref: "근거: 사규 제5조 및 관련 절차" },
+            { q: "변경 사항에 대한 운전원 교육은 설비 가동(Start-up) 후에 실시해도 무방하다.", a: "X", desc: "교육은 반드시 운전 실행(가동) 전에 완료되어야 사고를 예방할 수 있습니다.", ref: "근거: 사규 제4조 제4항" },
+            { q: "P&ID 등 공정안전지침서의 최신화(현행화)는 설비 가동 전까지 완료되어야 한다.", a: "O", desc: "현장과 도면이 일치하지 않으면 사고 위험이 높으므로 가동 전 반영이 원칙입니다.", ref: "근거: 사규 제11조 및 PSM 규정" },
+            { q: "설계대로 시공되었는지 최종 확인하는 '가동 전 점검(PSSR)'은 필수 절차이다.", a: "O", desc: "PSSR은 변경 내용이 현장에 안전하게 반영되었는지 검증하는 최종 단계입니다.", ref: "근거: 사규 제5조(절차)" },
+            { q: "가동 전 점검(PSSR) 팀장은 원칙적으로 해당 설비를 설계한 '설계팀장'이 맡는다.", a: "X", desc: "PSSR 팀장은 설비를 인수하여 직접 운전할 '사용부서장'이 맡는 것이 원칙입니다.", ref: "근거: 사규 제9조" },
+            { q: "임시변경의 원상복구(또는 정식변경) 권장 기간은 가동 전 점검 예정일로부터 6개월 이내이다.", a: "O", desc: "사규는 임시변경의 방치를 막기 위해 6개월의 권장 기간을 두고 있습니다.", ref: "근거: 사규 제8조 제3항" },
+            { q: "변경 실시 3개월 후, 의도한 목적이 달성되었는지 검토하는 단계를 '효과분석'이라 한다.", a: "O", desc: "변경이 실제 공정 안정화나 생산성에 기여했는지 사후에 확인하는 절차입니다.", ref: "근거: 사규 제5조(절차)" },
+            { q: "야간 등 돌발 사고 예방을 위해 즉시 조치가 필요한 상황에서 수행하는 절차는 '비상변경'이다.", a: "O", desc: "긴급한 안전 확보를 위해 선 조치 후 사후 보고가 가능한 예외 절차입니다.", ref: "근거: 사규 제10조" },
+            { q: "비상변경 조치 완료 후, 담당 임원에게 서면 사후 보고를 마쳐야 하는 기한은 48시간 이내이다.", a: "O", desc: "사규는 비상 상황 조치 후 48시간(이틀) 내 공식 보고를 규정하고 있습니다.", ref: "근거: 사규 제10조 제4항" },
+            { q: "변경관리 위원회(MOC Committee)는 최소 1년에 1회만 운영하면 된다.", a: "X", desc: "임원 주관 하에 최소 3개월(분기별)에 1회 이상 운영되어야 합니다.", ref: "근거: 사규 제11조 제1항" },
+            { q: "승인 후 5년 이상 미진행된 변경 건을 다시 진행할 때는 위원회 재심의를 받아야 한다.", a: "O", desc: "장기간 미진행 시 주변 환경 변화로 위험 요인이 달라질 수 있어 재심의가 필수입니다.", ref: "근거: 사규 제11조 제3항" },
+            { q: "신규 화학물질 도입 시 법적 규제 및 MSDS 적절성을 심의하는 주관 부서는 '자재팀'이다.", a: "X", desc: "안전보건팀, 환경팀 등 SHE 전문 부서에서 법적 적절성을 심의합니다.", ref: "근거: 사규 제12조 제4항" },
+            { q: "변경관리에 관한 모든 기록물(신청서, 평가서 등)의 보존 기간은 5년이다.", a: "O", desc: "PSM 법규 및 사규 기록 관리 기준에 따라 5년간 기록을 보존해야 합니다.", ref: "근거: 사규 및 PSM 지침" }
+        ];
+
+        let currentIdx = 0;
+        const startScreen = document.getElementById('start-screen');
+        const qScreen = document.getElementById('question-screen');
+        const aScreen = document.getElementById('answer-screen');
+        const bar = document.getElementById('progress-bar');
+
+        function startQuiz() {
+            startScreen.style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const cur = quizData[currentIdx];
+            document.getElementById('q-number').innerText = `QUESTION ${String(currentIdx + 1).padStart(2, '0')}`;
+            document.getElementById('question-text').innerText = cur.q;
+            
+            qScreen.style.display = 'flex';
+            aScreen.style.display = 'none';
+            bar.style.width = `${(currentIdx / quizData.length) * 100}%`;
+        }
+
+        function showAnswer() {
+            const cur = quizData[currentIdx];
+            const ansDisplay = document.getElementById('ans-display');
+            
+            ansDisplay.innerText = cur.a;
+            ansDisplay.style.color = (cur.a === 'O') ? 'var(--o-color)' : 'var(--x-color)';
+            
+            document.getElementById('desc-display').innerText = cur.desc;
+            document.getElementById('ref-display').innerText = cur.ref;
+            
+            qScreen.style.display = 'none';
+            aScreen.style.display = 'flex';
+        }
+
+        function goNext() {
+            currentIdx++;
+            if(currentIdx < quizData.length) {
+                loadQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            bar.style.width = '100%';
+            document.getElementById('main-container').innerHTML = `
+                <div class="fade">
+                    <div style="font-size: 8rem;">🏆</div>
+                    <h2 style="font-size: 3.5rem; margin: 20px 0;">골든벨 대장정 종료!</h2>
+                    <p style="font-size: 1.8rem; color: #666; line-height: 1.6; font-weight: 700;">
+                        모든 문제를 완주하셨습니다.<br>
+                        한화토탈에너지스의 안전 문화를 이끌어주셔서 감사합니다.
+                    </p>
+                    <div style="margin-top: 40px;">
+                        <button class="btn-main" onclick="location.reload()">다시 시작하기</button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
